@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 int main() {
+  // 0x400000
   Elf64_Ehdr header = {
     .e_ident = {
       ELFMAG0, // 7f
@@ -21,7 +22,7 @@ int main() {
     .e_type = ET_EXEC,
     .e_machine = EM_X86_64,
     .e_version = EV_CURRENT,
-    .e_entry = 0x40007f, // virtual address to where to start process, why this number? points to the first instruction.
+    .e_entry = 0x400086, // virtual address to where to start process. points to the first instruction.
     .e_phoff = sizeof(Elf64_Ehdr), // program header file offset (bytes)
     .e_shoff = 0, // section header file offset (bytes)
     .e_flags = 0,
@@ -33,6 +34,7 @@ int main() {
     .e_shstrndx = SHN_UNDEF, // index of the names' section in the table
   };
 
+  // 0x400000 + 64
   Elf64_Phdr program_header = {
     .p_type = PT_LOAD,
     .p_flags = PF_X | PF_R,
@@ -44,9 +46,10 @@ int main() {
     .p_align = 0x8
   };
 
+  // 0x400000 + 64 + 56
   char code[] = {
     // .data
-    'H', 'e', 'l', 'l', 'o', '!', '\n',
+    'H', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd', '!', '\n',
 
     // .text
     0xb8, // mov rax, 1 (write syscall)
@@ -58,8 +61,8 @@ int main() {
     0x48, 0xbe, // mov rsi, hello pointer
     0x78, 0x00, 0x40, 0, 0, 0, 0, 0,
 
-    0xba, // mov rdx, 7 (sizeof("Hello!"))
-    7, 0, 0, 0,
+    0xba, // mov rdx, 14 (sizeof("Hello, world!\n"))
+    0x0e, 0, 0, 0,
 
     0xf, 0x5, // syscall (write "hello" to stdout)
 
