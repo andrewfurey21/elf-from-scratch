@@ -1,2 +1,4 @@
-elf
-file.elf
+minimal_executable.elf
+minimal_relocatable.o
+linked
+build
