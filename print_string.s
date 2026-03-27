@@ -3,10 +3,10 @@
 .global print_string
 
 print_string:
-    mov rax, 1
-    mov rdx, rsi
-    mov rsi, rdi
-    mov rdi, 1
+    mov rax, 1   # write syscall
+    mov rdx, rsi # length of string
+    mov rsi, rdi # address of string
+    mov rdi, 1   # write to stdout
     syscall
     ret
 

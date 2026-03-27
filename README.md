@@ -4,4 +4,4 @@
 
 `reloc.c` generates a relocatable that links with `main.c`.
 
-TODO: post
+I wrote a post about it [here](https://www.siliconchipcookies.com/p/sections-vs-segments-in-the-elf-format)

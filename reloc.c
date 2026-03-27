@@ -178,16 +178,23 @@ int main(int argc, char ** argv) {
 
   // Code
   total += write_bytes(f, &code, sizeof(code));
+  printf("Code size: %ld\n", sizeof(code));
 
   // section header string table
+  u64 shstrtab_size = 0;
   for (u64 i = 0; i < SHSTRTAB_SIZE; i++) {
-    total += write_bytes(f, section_header_string_table[i], strlen(section_header_string_table[i]) + 1);
+    shstrtab_size += write_bytes(f, section_header_string_table[i], strlen(section_header_string_table[i]) + 1);
   }
+  printf("shstrtabsize: %lld\n", shstrtab_size);
+  total += shstrtab_size;
 
   // string table
+  u64 strtab_size = 0;
   for (u64 i = 0; i < STRTAB_SIZE; i++) {
-    total += write_bytes(f, string_table[i], strlen(string_table[i]) + 1);
+    strtab_size += write_bytes(f, string_table[i], strlen(string_table[i]) + 1);
   }
+  total += strtab_size;
+  printf("strtabsize: %lld\n", strtab_size);
 
   printf("Bytes written to %s: %ld\n", argv[1], total);
 }
